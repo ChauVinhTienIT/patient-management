@@ -1,4 +1,4 @@
-package com.tiencv.patientservice.dto;
+package com.tiencv.patientservice.dto.response;
 
 import lombok.*;
 

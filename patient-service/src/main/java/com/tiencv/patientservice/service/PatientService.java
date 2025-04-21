@@ -1,28 +1,14 @@
 package com.tiencv.patientservice.service;
 
-import com.tiencv.patientservice.dto.PatientResponseDTO;
-import com.tiencv.patientservice.mapper.PatientMapper;
-import com.tiencv.patientservice.model.Patient;
-import com.tiencv.patientservice.repository.PatientRepository;
-import org.springframework.stereotype.Service;
+import com.tiencv.patientservice.dto.request.PatientRequestDTO;
+import com.tiencv.patientservice.dto.response.PatientResponseDTO;
 
 import java.util.List;
+import java.util.UUID;
 
-@Service
-public class PatientService {
-    private final PatientRepository patientRepository;
-    private final PatientMapper patientMapper;
-
-    // Constructor injection for better testability and immutability
-    public PatientService(PatientRepository patientRepository, PatientMapper patientMapper) {
-        this.patientRepository = patientRepository;
-        this.patientMapper = patientMapper;
-    }
-
-    public List<PatientResponseDTO> getAllPatients() {
-        List<Patient> patients = patientRepository.findAll();
-        return patients.stream()
-                .map(patientMapper::toPatientResponseDTO)
-                .toList();
-    }
+public interface PatientService {
+    List<PatientResponseDTO> getAllPatients();
+    PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO);
+    PatientResponseDTO updatePatient(PatientRequestDTO patientRequestDTO, UUID id);
+    PatientResponseDTO deletePatient(UUID id);
 }

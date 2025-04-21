@@ -1,0 +1,12 @@
+### Post request to create patient
+POST http://localhost:4000/patients
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "tiencv@fpt.com",
+  "address": "90 Truong Tho Thu Duc TP HCM",
+  "dateOfBirth": "1998-02-20",
+  "registeredDate": "2025-11-28"
+}
+###
