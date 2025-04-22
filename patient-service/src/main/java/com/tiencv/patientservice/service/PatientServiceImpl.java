@@ -4,6 +4,8 @@ import com.tiencv.patientservice.dto.request.PatientRequestDTO;
 import com.tiencv.patientservice.dto.response.PatientResponseDTO;
 import com.tiencv.patientservice.exception.EmailAlreadyExitsException;
 import com.tiencv.patientservice.exception.PatientNotFoundException;
+import com.tiencv.patientservice.grpc.BillingServiceGrpcClient;
+import com.tiencv.patientservice.kafka.KafkaProducer;
 import com.tiencv.patientservice.mapper.PatientMapper;
 import com.tiencv.patientservice.model.Patient;
 import com.tiencv.patientservice.repository.PatientRepository;
@@ -17,11 +19,15 @@ import java.util.UUID;
 public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final BillingServiceGrpcClient billingServiceGrpcClient;
+    private final KafkaProducer kafkaProducer;
 
     // Constructor injection for better testability and immutability
-    public PatientServiceImpl(PatientRepository patientRepository, PatientMapper patientMapper) {
+    public PatientServiceImpl(PatientRepository patientRepository, PatientMapper patientMapper, BillingServiceGrpcClient billingServiceGrpcClient, KafkaProducer kafkaProducer, KafkaProducer kafkaProducer1) {
         this.patientRepository = patientRepository;
         this.patientMapper = patientMapper;
+        this.billingServiceGrpcClient = billingServiceGrpcClient;
+        this.kafkaProducer = kafkaProducer1;
     }
 
     @Override
@@ -41,6 +47,15 @@ public class PatientServiceImpl implements PatientService {
         }
 
         Patient savedPatient = patientRepository.save(patient);
+
+        // Create a billing account for the patient using gRPC
+        billingServiceGrpcClient.createBillingAccount(
+                savedPatient.getId().toString(),
+                savedPatient.getName(),
+                savedPatient.getEmail()
+        );
+
+        kafkaProducer.sendEvent(savedPatient);
         return patientMapper.toPatientResponseDTO(savedPatient);
     }
 

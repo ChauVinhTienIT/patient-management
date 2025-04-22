@@ -1,6 +1,10 @@
 spring:
   application:
     name: patient-service
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
 
 # Uncomment the following lines to enable H2 database for development
 #  h2:
