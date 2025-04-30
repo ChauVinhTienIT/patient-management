@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: auth-service
+
+# Uncomment the following lines to enable H2 database for development
+#  h2:
+#    console:
+#      path: /h2-console
+#  datasource:
+#    url: jdbc:h2:mem:auth_db
+#    driver-class-name: org.h2.Driver
+#    username: admin
+#    password: admin
+#  jpa:
+#    database-platform: org.hibernate.dialect.H2Dialect
+#    hibernate:
+#      ddl-auto: update
+#  sql:
+#    init:
+#      mode: always
+server:
+  port: 4005

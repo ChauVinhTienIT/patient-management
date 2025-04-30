@@ -1,10 +1,11 @@
 ### Post request to create patient
-POST http://localhost:4000/patients
+POST http://localhost:4004/api/patients
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
   "name": "Tien Vinh",
-  "email": "tiencv13@fpt.com",
+  "email": "tiencv132@fpt.com",
   "address": "90 Truong Tho Thu Duc TP HCM",
   "dateOfBirth": "1998-02-20",
   "registeredDate": "2025-11-28"

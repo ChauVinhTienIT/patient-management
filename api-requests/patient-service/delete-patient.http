@@ -1,4 +1,4 @@
 ### GET request to example server
-DELETE http://localhost:4000/patients/223e4567-e89b-12d3-a456-426614174014
-
+DELETE http://localhost:4004/api/patients/922c01e1-5a63-4761-aeba-7038f00ef21c
+Authorization: Bearer {{accessToken}}
 ###

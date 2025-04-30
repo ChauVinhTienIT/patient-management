@@ -1,0 +1,51 @@
+server:
+  port: 4004
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      # The routes are defined here
+      routes:
+        # REST CLIENT -> http://localhost:4004/api/patients
+        # API GATEWAY -> http://patient-service:4000/api/patients
+        # PATIENT SERVICE (SPRING BOOT APP) -> /patients
+        - id: patient-service-route
+          uri: http://patient-service:4000
+          predicates:
+            - Path=/api/patients/**
+          filters:
+            - StripPrefix=1
+            - JwtValidation
+        # Patient service api doc route
+        # REST CLIENT -> http://localhost:4004/api-docs/patients
+        # API GATEWAY -> http://patient-service:4000/v3/api-docs
+        - id: api-docs-patient-route
+          uri: http://patient-service:4000
+          predicates:
+            - Path=/api-docs/patients
+          filters:
+            - RewritePath=/api-docs/patients,/v3/api-docs
+        - id: api-docs-patient-swagger-ui-route
+          uri: http://patient-service:4000
+          predicates:
+            - Path=/api-docs/patients/swagger-ui/**
+          filters:
+            - RewritePath=/api-docs/patients/swagger-ui,/swagger-ui
+        # Auth service route
+        - id: auth-service-route
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        # Auth service api doc route
+        - id: api-docs-auth-route
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/api-docs/auth
+          filters:
+            - RewritePath=/api-docs/auth,/v3/api-docs
+
+
